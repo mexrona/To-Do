@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>To-Do</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap"
+            rel="stylesheet" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="img/favicons/apple-touch-icon.png" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="img/favicons/favicon-32x32.png" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="img/favicons/favicon-16x16.png" />
+        <link rel="manifest" href="img/favicons/site.webmanifest" />
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="title">To-Do List</h1>
+            <div class="input">
+                <img
+                    class="icon icon--search"
+                    src="img/icons/search.svg"
+                    alt="Найти"
+                    title="Найти" />
+                <label>
+                    <input name="input" type="text" placeholder="Задача..." />
+                </label>
+                <img
+                    class="icon icon--add"
+                    src="img/icons/add.svg"
+                    alt="Добавить"
+                    title="Добавить" />
+                <img
+                    class="icon icon--filter"
+                    src="img/icons/filter.svg"
+                    alt="Сортировать"
+                    title="Сортировать" />
+            </div>
+            <div id="list" class="list">
+                <!-- <div class="task">
+                    <label>
+                        <input type="checkbox" />
+                    </label>
+                    <span>Задача</span>
+                    <span class="icon icon--reminder" title="Напомнить"></span>
+                    <img
+                        class="icon icon--delete"
+                        src="img/icons/delete.svg"
+                        alt="Удалить"
+                        title="Удалить" />
+                </div> -->
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>

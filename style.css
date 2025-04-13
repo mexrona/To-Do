@@ -1,0 +1,180 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:focus,
+:active {
+    outline: none;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+    display: block;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-family: "Marck Script", cursive;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 20px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color: #000066;
+    background-color: #ffffa5;
+}
+
+input,
+button,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: 400;
+}
+
+.container {
+    width: 100%;
+    max-width: 776px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 64px;
+    text-align: center;
+}
+
+.input {
+    margin-top: 30px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 1rem;
+    position: relative;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    transform: translate(0, -50%);
+}
+
+.icon--search {
+    left: 5px;
+}
+
+.icon--add {
+    right: 5px;
+}
+
+.icon--filter,
+.icon--delete {
+    right: -35px;
+}
+
+.icon--reminder {
+    background-image: url(./img/icons/crossed-out-bell.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    right: 5px;
+}
+
+.input {
+    margin-right: 40px;
+}
+
+.input input {
+    width: 100%;
+    padding: 5px 30px;
+    color: #000066;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.list {
+    margin-top: 30px;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    padding: 5px 30px 5px 5px;
+    margin: 10px 40px 0 0;
+    background-color: #e3de96;
+    border-radius: 4px;
+    position: relative;
+}
+
+.task:first-child {
+    margin-top: 0;
+}
+
+.task label,
+.task input {
+    width: 20px;
+    height: 20px;
+}
+
+.task label {
+    margin-right: 10px;
+}
