@@ -1,12 +1,17 @@
 const list = document.getElementById("list");
 
-const createTask = (flag, data, task) => {
+const createTask = (flag, task) => {
     if (flag) {
         task.checked = false;
     }
 
     const item = document.createElement("div");
     item.classList.add("task");
+
+    if (task.checked) {
+        item.classList.add("checked");
+    }
+
     const label = document.createElement("label");
     const input = document.createElement("input");
     input.setAttribute("type", "checkbox");
@@ -16,13 +21,15 @@ const createTask = (flag, data, task) => {
     }
 
     input.addEventListener("change", function () {
+        const title = task.title;
+
         if (task.checked === false) {
             task.checked = true;
+            checkTask(true, title);
         } else {
             task.checked = false;
+            checkTask(false, title);
         }
-
-        localStorage.setItem("tasks", JSON.stringify(data));
     });
 
     label.appendChild(input);
@@ -30,11 +37,15 @@ const createTask = (flag, data, task) => {
     const title = document.createElement("span");
     title.innerHTML = task.title;
     item.appendChild(title);
-    const span = document.createElement("span");
-    span.classList.add("icon");
-    span.classList.add("icon--reminder");
-    span.setAttribute("title", "Напомнить");
-    item.appendChild(span);
+
+    if (!task.checked) {
+        const span = document.createElement("span");
+        span.classList.add("icon");
+        span.classList.add("icon--reminder");
+        span.setAttribute("title", "Напомнить");
+        item.appendChild(span);
+    }
+
     const img = document.createElement("img");
     img.classList.add("icon");
     img.classList.add("icon--delete");
@@ -52,7 +63,7 @@ const createTask = (flag, data, task) => {
 
 const createTasks = (flag, data) => {
     data.forEach((task) => {
-        createTask(flag, data, task);
+        createTask(flag, task);
     });
 
     localStorage.setItem("tasks", JSON.stringify(data));
@@ -72,9 +83,11 @@ if (!localStorage.getItem("tasks")) {
 const input = document.getElementById("input");
 const add = document.getElementById("add");
 
-input.addEventListener("change", function () {});
-
 add.addEventListener("click", function () {
+    if (!input.value) {
+        return;
+    }
+
     console.log("add");
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     copyOfTasks.unshift({title: input.value, checked: false});
@@ -85,6 +98,23 @@ add.addEventListener("click", function () {
 var deleteTask = (title) => {
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     const newTasks = copyOfTasks.filter((task) => task.title !== title);
+    location.reload();
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+};
+
+var checkTask = (flag, title) => {
+    const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
+    const newTasks = copyOfTasks.filter((task) => task.title !== title);
+    const tasksToAdd = copyOfTasks.filter((task) => task.title === title);
+    tasksToAdd.forEach((task) => {
+        task.checked = flag;
+
+        if (flag) {
+            newTasks.push(task);
+        } else {
+            newTasks.unshift(task);
+        }
+    });
     location.reload();
     localStorage.setItem("tasks", JSON.stringify(newTasks));
 };

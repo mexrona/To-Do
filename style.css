@@ -165,6 +165,10 @@ h6 {
     position: relative;
 }
 
+.task.checked {
+    opacity: 0.5;
+}
+
 .task:first-child {
     margin-top: 0;
 }
