@@ -40,6 +40,12 @@ const createTask = (flag, data, task) => {
     img.classList.add("icon--delete");
     img.setAttribute("src", "img/icons/delete.svg");
     img.setAttribute("title", "Удалить");
+
+    img.addEventListener("click", function () {
+        const title = task.title;
+        deleteTask(title);
+    });
+
     item.appendChild(img);
     list.appendChild(item);
 };
@@ -75,3 +81,10 @@ add.addEventListener("click", function () {
     location.reload();
     localStorage.setItem("tasks", JSON.stringify(copyOfTasks));
 });
+
+var deleteTask = (title) => {
+    const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
+    const newTasks = copyOfTasks.filter((task) => task.title !== title);
+    location.reload();
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+};
