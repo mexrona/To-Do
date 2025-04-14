@@ -44,6 +44,10 @@ body {
     background-color: #ffffa5;
 }
 
+body.no-scroll {
+    overflow: hidden;
+}
+
 input,
 button,
 textarea {
@@ -91,11 +95,15 @@ h6 {
     font-weight: 400;
 }
 
-.container {
+.header {
     width: 100%;
-    max-width: 776px;
     padding: 20px;
-    margin: 0 auto;
+    background-color: #ffffa5;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
 .title {
@@ -104,9 +112,19 @@ h6 {
 }
 
 .input {
-    margin-top: 30px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 1rem;
+    width: 100%;
+    max-width: 776px;
+    padding-right: 40px;
+    margin: 30px auto 0;
     position: relative;
+}
+
+.input input {
+    width: 100%;
+    padding: 5px 30px 5px 5px;
+    margin-right: 40px;
+    color: #000066;
+    border-radius: 4px;
 }
 
 .icon {
@@ -119,15 +137,14 @@ h6 {
     transform: translate(0, -50%);
 }
 
-.icon--search {
-    left: 5px;
-}
-
 .icon--add {
-    right: 5px;
+    right: 45px;
 }
 
-.icon--filter,
+.icon--filter {
+    right: 10px;
+}
+
 .icon--delete {
     right: -35px;
 }
@@ -139,20 +156,12 @@ h6 {
     right: 5px;
 }
 
-.input {
-    margin-right: 40px;
-}
-
-.input input {
-    width: 100%;
-    padding: 5px 30px;
-    color: #000066;
-    text-align: center;
-    border-radius: 4px;
-}
-
 .list {
-    margin-top: 30px;
+    width: 100%;
+    max-width: 776px;
+    padding: 20px;
+    padding: 265px 20px 65px;
+    margin: 0 auto;
 }
 
 .task {
@@ -181,4 +190,62 @@ h6 {
 
 .task label {
     margin-right: 10px;
+}
+
+.filter {
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 1;
+    transform: translate(0, -50%);
+}
+
+.mask {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 165, 0.75);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.mask.show {
+    display: block;
+}
+
+.mask__inner {
+    padding: 10px;
+    background-color: #b0b0b0;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0.5rem 1rem;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 500;
+    transform: translate(-50%, -50%);
+}
+
+.timer {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.button {
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.button--red {
+    background-color: #510000;
+}
+
+.button--green {
+    background-color: #006f2c;
 }

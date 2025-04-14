@@ -27,20 +27,15 @@
         <link rel="manifest" href="img/favicons/site.webmanifest" />
     </head>
     <body>
-        <div class="container">
+        <header class="header">
             <h1 class="title">To-Do List</h1>
             <div class="input">
-                <img
-                    class="icon icon--search"
-                    src="img/icons/search.svg"
-                    alt="Найти"
-                    title="Найти" />
                 <label>
                     <input
                         id="input"
                         name="input"
                         type="text"
-                        placeholder="Задача..." />
+                        placeholder="Введите задачу..." />
                 </label>
                 <img
                     id="add"
@@ -51,22 +46,27 @@
                 <img
                     class="icon icon--filter"
                     src="img/icons/filter.svg"
-                    alt="Сортировать"
-                    title="Сортировать" />
+                    alt="Фильтр" />
+                <label>
+                    <select
+                        id="filter"
+                        class="filter"
+                        name="filter"
+                        title="Фильтр">
+                        <option value="">Фильтры:</option>
+                        <option value="all">Все</option>
+                        <option value="completed">Выполненные</option>
+                        <option value="uncompleted">Невыполненные</option>
+                    </select>
+                </label>
             </div>
-            <div id="list" class="list">
-                <!-- <div class="task">
-                    <label>
-                        <input type="checkbox" />
-                    </label>
-                    <span>Задача</span>
-                    <span class="icon icon--reminder" title="Напомнить"></span>
-                    <img
-                        class="icon icon--delete"
-                        src="img/icons/delete.svg"
-                        alt="Удалить"
-                        title="Удалить" />
-                </div> -->
+        </header>
+        <div id="list" class="list"></div>
+        <div class="mask">
+            <div class="mask__inner">
+                <input id="timer" name="timer" type="number" class="timer" />
+                <button id="start" class="button button--green">Начать</button>
+                <button id="cancel" class="button button--red">Отмена</button>
             </div>
         </div>
         <script src="app.js"></script>
