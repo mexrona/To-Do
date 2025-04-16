@@ -209,7 +209,7 @@ h6 {
     width: 100vw;
     height: 100vh;
     background-color: rgba(255, 255, 165, 0.75);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
@@ -231,6 +231,10 @@ h6 {
     transform: translate(-50%, -50%);
 }
 
+.mask__inner--message {
+    background-color: #fff;
+}
+
 .timer {
     padding: 5px;
     border-radius: 4px;
@@ -248,4 +252,14 @@ h6 {
 
 .button--green {
     background-color: #006f2c;
+}
+
+.button--pink {
+    display: block;
+    margin: 0 auto;
+    background-color: #a1757d;
+}
+
+.message__text {
+    margin-bottom: 10px;
 }

@@ -45,7 +45,6 @@ const createTask = (flag, task) => {
         span.setAttribute("title", "Напомнить");
 
         span.addEventListener("click", function () {
-            window.scrollTo(0, 0);
             document.body.classList.add("no-scroll");
             document.getElementsByClassName("mask")[0].classList.add("show");
         });
@@ -181,4 +180,36 @@ const cancel = document.getElementById("cancel");
 cancel.addEventListener("click", function () {
     document.body.classList.remove("no-scroll");
     document.getElementsByClassName("mask")[0].classList.remove("show");
+});
+
+const messageMask = document.getElementById("message");
+const messageText = document.getElementsByClassName("message__text")[0];
+const okay = document.getElementById("okay");
+
+const remindMessage = (message) => {
+    messageText.innerHTML = message;
+    messageMask.classList.add("show");
+};
+
+okay.addEventListener("click", function () {
+    messageMask.classList.remove("show");
+    messageText.innerHTML = "";
+});
+
+const timer = document.getElementById("timer");
+const start = document.getElementById("start");
+
+const createTimer = (time) => {
+    setTimeout(() => {
+        remindMessage("Hello world!");
+    }, time * 1000);
+};
+
+start.addEventListener("click", function () {
+    if (timer.value > 0) {
+        document.body.classList.remove("no-scroll");
+        document.getElementsByClassName("mask")[0].classList.remove("show");
+        createTimer(timer.value);
+        timer.value = "";
+    }
 });
