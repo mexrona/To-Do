@@ -75,7 +75,11 @@ const createTasks = (flag, type, data) => {
     localStorage.setItem(type, JSON.stringify(data));
 };
 
-if (!localStorage.getItem("tasks") && !localStorage.getItem("filter")) {
+if (
+    !localStorage.getItem("tasks") &&
+    !localStorage.getItem("completed") &&
+    !localStorage.getItem("uncompleted")
+) {
     fetch("https://jsonplaceholder.typicode.com/todos")
         .then((response) => response.json())
         .then((data) => {
@@ -83,14 +87,23 @@ if (!localStorage.getItem("tasks") && !localStorage.getItem("filter")) {
         });
 }
 
-if (localStorage.getItem("tasks") && !localStorage.getItem("filter")) {
+if (
+    localStorage.getItem("tasks") &&
+    !localStorage.getItem("completed") &&
+    !localStorage.getItem("uncompleted")
+) {
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     createTasks(false, "tasks", copyOfTasks);
 }
 
-if (localStorage.getItem("tasks") && localStorage.getItem("filter")) {
-    const copyOfFilter = JSON.parse(localStorage.getItem("filter"));
-    createTasks(false, "filter", copyOfFilter);
+if (localStorage.getItem("tasks") && localStorage.getItem("completed")) {
+    const copyOfFilter = JSON.parse(localStorage.getItem("completed"));
+    createTasks(false, "completed", copyOfFilter);
+}
+
+if (localStorage.getItem("tasks") && localStorage.getItem("uncompleted")) {
+    const copyOfFilter = JSON.parse(localStorage.getItem("uncompleted"));
+    createTasks(false, "uncompleted", copyOfFilter);
 }
 
 const input = document.getElementById("input");
@@ -101,14 +114,25 @@ add.addEventListener("click", function () {
         return;
     }
 
-    console.log("add");
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     copyOfTasks.unshift({
         id: copyOfTasks.length + 1,
         title: input.value,
         checked: false,
     });
+
     location.reload();
+
+    if (localStorage.getItem("uncompleted")) {
+        const copyOfFilter = JSON.parse(localStorage.getItem("uncompleted"));
+        copyOfFilter.unshift({
+            id: copyOfTasks.length + 1,
+            title: input.value,
+            checked: false,
+        });
+        localStorage.setItem("uncompleted", JSON.stringify(copyOfFilter));
+    }
+
     localStorage.setItem("tasks", JSON.stringify(copyOfTasks));
 });
 
@@ -118,11 +142,18 @@ var deleteTask = (title) => {
     location.reload();
     localStorage.setItem("tasks", JSON.stringify(newTasks));
 
-    if (localStorage.getItem("filter")) {
-        const copyOfFilter = JSON.parse(localStorage.getItem("filter"));
+    if (localStorage.getItem("completed")) {
+        const copyOfFilter = JSON.parse(localStorage.getItem("completed"));
         const newFilter = copyOfFilter.filter((task) => task.title !== title);
         location.reload();
-        localStorage.setItem("filter", JSON.stringify(newFilter));
+        localStorage.setItem("completed", JSON.stringify(newFilter));
+    }
+
+    if (localStorage.getItem("uncompleted")) {
+        const copyOfFilter = JSON.parse(localStorage.getItem("uncompleted"));
+        const newFilter = copyOfFilter.filter((task) => task.title !== title);
+        location.reload();
+        localStorage.setItem("uncompleted", JSON.stringify(newFilter));
     }
 };
 
@@ -157,7 +188,9 @@ filter.addEventListener("change", function () {
             }
         });
         location.reload();
-        localStorage.setItem("filter", JSON.stringify(filteredTasks));
+        localStorage.setItem("completed", JSON.stringify(filteredTasks));
+        localStorage.removeItem("uncompleted");
+
         return;
     }
 
@@ -168,12 +201,14 @@ filter.addEventListener("change", function () {
             }
         });
         location.reload();
-        localStorage.setItem("filter", JSON.stringify(filteredTasks));
+        localStorage.setItem("uncompleted", JSON.stringify(filteredTasks));
+        localStorage.removeItem("completed");
         return;
     }
 
     location.reload();
-    localStorage.removeItem("filter");
+    localStorage.removeItem("completed");
+    localStorage.removeItem("uncompleted");
 });
 
 const cancel = document.getElementById("cancel");
