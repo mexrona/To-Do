@@ -156,6 +156,10 @@ h6 {
     right: 5px;
 }
 
+.icon--reminder.active {
+    background-image: url(./img/icons/added-bell.svg);
+}
+
 .list {
     width: 100%;
     max-width: 776px;
