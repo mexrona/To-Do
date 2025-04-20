@@ -1,4 +1,61 @@
 const list = document.getElementById("list");
+const input = document.getElementById("input");
+const add = document.getElementById("add");
+const filter = document.getElementById("filter");
+const cancel = document.getElementById("cancel");
+const messageMask = document.getElementById("message");
+const messageText = document.getElementsByClassName("message__text")[0];
+const okay = document.getElementById("okay");
+const timer = document.getElementById("timer");
+const start = document.getElementById("start");
+
+let currentTask;
+
+const alarm = {
+    addLocalStorage(id, title) {
+        if (!localStorage.getItem("alarm")) {
+            localStorage.setItem(
+                "alarm",
+                JSON.stringify([
+                    {id: id, isActive: false, time: null, title: title},
+                ])
+            );
+            return;
+        }
+
+        const copyOfAlarm = JSON.parse(localStorage.getItem("alarm"));
+        copyOfAlarm.push({id: id, isActive: false, time: null, title: title});
+        localStorage.setItem("alarm", JSON.stringify(copyOfAlarm));
+    },
+
+    remind(aMessage) {
+        console.log(aMessage);
+        this.timeoutID = undefined;
+
+        messageText.innerHTML = aMessage;
+        messageMask.classList.add("show");
+    },
+
+    setup(time, title) {
+        if (time === null) return;
+
+        if (typeof this.timeoutID === "number") {
+            this.cancel();
+        }
+
+        this.timeoutID = setTimeout(
+            (msg) => {
+                this.remind(msg);
+            },
+            time,
+            title
+        );
+    },
+
+    cancel() {
+        clearTimeout(this.timeoutID);
+    },
+};
 
 const createTask = (flag, task) => {
     if (flag) {
@@ -40,13 +97,22 @@ const createTask = (flag, task) => {
 
     if (!task.checked) {
         const span = document.createElement("span");
+        span.id = task.id;
         span.classList.add("icon");
         span.classList.add("icon--reminder");
         span.setAttribute("title", "Напомнить");
 
-        span.addEventListener("click", function () {
+        span.addEventListener("click", function (event) {
             document.body.classList.add("no-scroll");
             document.getElementsByClassName("mask")[0].classList.add("show");
+
+            let currentTask = event.target.id;
+
+            console.log("before:", currentTask);
+
+            currentTask = "";
+
+            console.log("after:", currentTask);
         });
 
         item.appendChild(span);
@@ -84,6 +150,9 @@ if (
         .then((response) => response.json())
         .then((data) => {
             createTasks(true, "tasks", data);
+            data.forEach((task) => {
+                alarm.addLocalStorage(task.id, task.title);
+            });
         });
 }
 
@@ -106,13 +175,8 @@ if (localStorage.getItem("tasks") && localStorage.getItem("uncompleted")) {
     createTasks(false, "uncompleted", copyOfFilter);
 }
 
-const input = document.getElementById("input");
-const add = document.getElementById("add");
-
 add.addEventListener("click", function () {
-    if (!input.value) {
-        return;
-    }
+    if (!input.value) return;
 
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     copyOfTasks.unshift({
@@ -120,6 +184,8 @@ add.addEventListener("click", function () {
         title: input.value,
         checked: false,
     });
+
+    alarm.addLocalStorage(copyOfTasks.length, input.value);
 
     location.reload();
 
@@ -175,8 +241,6 @@ var checkTask = (flag, title) => {
     localStorage.setItem("tasks", JSON.stringify(newTasks));
 };
 
-const filter = document.getElementById("filter");
-
 filter.addEventListener("change", function () {
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     let filteredTasks = [];
@@ -211,40 +275,38 @@ filter.addEventListener("change", function () {
     localStorage.removeItem("uncompleted");
 });
 
-const cancel = document.getElementById("cancel");
 cancel.addEventListener("click", function () {
     document.body.classList.remove("no-scroll");
     document.getElementsByClassName("mask")[0].classList.remove("show");
 });
-
-const messageMask = document.getElementById("message");
-const messageText = document.getElementsByClassName("message__text")[0];
-const okay = document.getElementById("okay");
-
-const remindMessage = (message) => {
-    messageText.innerHTML = message;
-    messageMask.classList.add("show");
-};
 
 okay.addEventListener("click", function () {
     messageMask.classList.remove("show");
     messageText.innerHTML = "";
 });
 
-const timer = document.getElementById("timer");
-const start = document.getElementById("start");
-
-const createTimer = (time) => {
-    setTimeout(() => {
-        remindMessage("Hello world!");
-    }, time * 1000);
-};
-
 start.addEventListener("click", function () {
     if (timer.value > 0) {
         document.body.classList.remove("no-scroll");
         document.getElementsByClassName("mask")[0].classList.remove("show");
-        createTimer(timer.value);
         timer.value = "";
     }
 });
+
+/* const remindMessage = (message) => {
+    messageText.innerHTML = message;
+    messageMask.classList.add("show");
+}; */
+
+/* const timeoutId1 = setTimeout(() => {
+    console.log("timeoutId1");
+}, 3000);
+
+const timeoutId2 = setTimeout(() => {
+    console.log("timeoutId2");
+}, 10000);
+
+window.addEventListener("click", function () {
+    clearTimeout(timeoutId2);
+    console.log("clear timeoutId");
+}); */
