@@ -10,7 +10,6 @@ const timer = document.getElementById("timer");
 const start = document.getElementById("start");
 
 let currentTask = null;
-console.log("before", currentTask);
 
 const alarm = {
     addLocalStorage(id, title) {
@@ -25,7 +24,7 @@ const alarm = {
         }
 
         const copyOfAlarm = JSON.parse(localStorage.getItem("alarm"));
-        copyOfAlarm.push({id: id, isActive: false, time: 0, title: title});
+        copyOfAlarm.unshift({id: id, isActive: false, time: 0, title: title});
         localStorage.setItem("alarm", JSON.stringify(copyOfAlarm));
     },
 
@@ -111,6 +110,7 @@ const createTask = (flag, task) => {
                         !span.classList.contains("active")
                     ) {
                         span.classList.add("active");
+                        alarm.setup(item.time, item.title);
                     }
 
                     if (
@@ -130,7 +130,6 @@ const createTask = (flag, task) => {
             document.getElementsByClassName("mask")[0].classList.add("show");
 
             currentTask = event.target.id;
-            console.log("during", currentTask);
         });
 
         item.appendChild(span);
@@ -196,6 +195,10 @@ if (localStorage.getItem("tasks") && localStorage.getItem("uncompleted")) {
 add.addEventListener("click", function () {
     if (!input.value) return;
 
+    if (!localStorage.getItem("tasks")) {
+        localStorage.setItem("tasks", JSON.stringify([]));
+    }
+
     const copyOfTasks = JSON.parse(localStorage.getItem("tasks"));
     copyOfTasks.unshift({
         id: copyOfTasks.length + 1,
@@ -225,6 +228,13 @@ var deleteTask = (title) => {
     const newTasks = copyOfTasks.filter((task) => task.title !== title);
     location.reload();
     localStorage.setItem("tasks", JSON.stringify(newTasks));
+
+    if (localStorage.getItem("alarm")) {
+        const copyOfAlarm = JSON.parse(localStorage.getItem("alarm"));
+        const newAlarm = copyOfAlarm.filter((task) => task.title !== title);
+        location.reload();
+        localStorage.setItem("alarm", JSON.stringify(newAlarm));
+    }
 
     if (localStorage.getItem("completed")) {
         const copyOfFilter = JSON.parse(localStorage.getItem("completed"));
@@ -300,13 +310,24 @@ cancel.addEventListener("click", function () {
 
 okay.addEventListener("click", function () {
     messageMask.classList.remove("show");
+
+    if (localStorage.getItem("alarm")) {
+        const copyOfAlarm = JSON.parse(localStorage.getItem("alarm"));
+        copyOfAlarm.forEach((task) => {
+            if (task.title === messageText.innerHTML) {
+                task.isActive = false;
+                task.time = 0;
+            }
+        });
+        location.reload();
+        localStorage.setItem("alarm", JSON.stringify(copyOfAlarm));
+    }
+
     messageText.innerHTML = "";
 });
 
 start.addEventListener("click", function () {
     if (timer.value <= 0) return;
-
-    console.log(timer.value);
 
     document.body.classList.remove("no-scroll");
     document.getElementsByClassName("mask")[0].classList.remove("show");
@@ -318,32 +339,12 @@ start.addEventListener("click", function () {
             task.time = timer.value * 1000;
         }
     });
-    localStorage.setItem("alarm", JSON.stringify(copyOfAlarm));
-    console.log(typeof currentTask);
-    console.log("action", currentTask);
 
     currentTask = null;
-    console.log("after", currentTask);
 
     timer.value = "";
 
     location.reload();
+
+    localStorage.setItem("alarm", JSON.stringify(copyOfAlarm));
 });
-
-/* const remindMessage = (message) => {
-    messageText.innerHTML = message;
-    messageMask.classList.add("show");
-}; */
-
-/* const timeoutId1 = setTimeout(() => {
-    console.log("timeoutId1");
-}, 3000);
-
-const timeoutId2 = setTimeout(() => {
-    console.log("timeoutId2");
-}, 10000);
-
-window.addEventListener("click", function () {
-    clearTimeout(timeoutId2);
-    console.log("clear timeoutId");
-}); */
